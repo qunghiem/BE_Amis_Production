@@ -1,4 +1,5 @@
 ﻿using MISA.PRODUCTION.Common.Attributes;
+using MISA.PRODUCTION.Common.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ namespace MISA.PRODUCTION.Common.Model
 {
 
     [ConfigTable("ProductionShift")] // Tên bảng trong database
-    public class ProductionShift
+    public class ProductionShift : BaseEntity
     {
         /// <summary>
         /// ID của ca sản xuất, là khóa chính, kiểu dữ liệu GUID để đảm bảo tính duy nhất trên toàn hệ thống

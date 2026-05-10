@@ -13,5 +13,6 @@ namespace MISA.PRODUCTION.Common.Resources
     {
         public static string Exception = "Có lỗi xảy ra, vui lòng liên hệ MISA!";
         public static string NotFoundPrimaryKey = "Không tìm thấy khóa chính của model";
+        public static string NotFound = "Dữ liệu không tồn tại trên hệ thống";
     }
 }

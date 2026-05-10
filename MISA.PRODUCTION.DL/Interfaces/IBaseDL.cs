@@ -8,6 +8,7 @@ namespace MISA.PRODUCTION.DL.Interfaces
 {
     public interface IBaseDL<T>
     {
-
+        // Lấy bản ghi theo ID
+        Task<T> GetById(Guid id);
     }
 }

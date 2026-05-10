@@ -16,5 +16,10 @@ namespace MISA.PRODUCTION.BL.Base
         {
             _baseDL = baseDL;
         }
+
+        public async Task<T> GetById(Guid id)
+        {
+            return await _baseDL.GetById(id);
+        }
     }
 }
