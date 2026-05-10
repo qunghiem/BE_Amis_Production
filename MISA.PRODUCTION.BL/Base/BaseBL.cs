@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MISA.PRODUCTION.BL.Interfaces;
+using MISA.PRODUCTION.DL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,13 @@ using System.Threading.Tasks;
 
 namespace MISA.PRODUCTION.BL.Base
 {
-    internal class BaseBL
+    public class BaseBL<T> : IBaseBL<T>
     {
+        protected IBaseDL<T> _baseDL;
+
+        public BaseBL(IBaseDL<T> baseDL)
+        {
+            _baseDL = baseDL;
+        }
     }
 }

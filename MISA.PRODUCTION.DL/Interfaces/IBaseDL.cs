@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MISA.PRODUCTION.DL.Interfaces
 {
-    internal interface IBaseDL
+    public interface IBaseDL<T>
     {
+
     }
 }

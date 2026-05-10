@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MISA.PRODUCTION.BL.Interfaces
 {
-    internal interface IBaseBL
+    public interface IBaseBL<T>
     {
+
     }
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -8,6 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MISA.PRODUCTION.BL\MISA.PRODUCTION.BL.csproj" />
+    <ProjectReference Include="..\MISA.PRODUCTION.Common\MISA.PRODUCTION.Common.csproj" />
+    <ProjectReference Include="..\MISA.PRODUCTION.DL\MISA.PRODUCTION.DL.csproj" />
   </ItemGroup>
 
 </Project>

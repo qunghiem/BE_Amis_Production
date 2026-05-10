@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MISA.PRODUCTION.Common\MISA.PRODUCTION.Common.csproj" />
+    <ProjectReference Include="..\MISA.PRODUCTION.DL\MISA.PRODUCTION.DL.csproj" />
+  </ItemGroup>
+
 </Project>
