@@ -10,4 +10,8 @@
     <Folder Include="ProcedureName\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.72" />
+  </ItemGroup>
+
 </Project>

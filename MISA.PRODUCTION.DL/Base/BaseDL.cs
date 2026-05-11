@@ -171,5 +171,56 @@ namespace MISA.PRODUCTION.DL.Base
             using var cnn = new MySqlConnection(connectionString);
             return await cnn.ExecuteAsync(sql, param);
         }
+
+        /// <summary>
+        /// Tìm kiếm có phân trang kết hợp lọc nhiều điều kiện, sắp xếp
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<PagingResult<T>> GetFilterPaging(FilterPagingRequest request)
+        {
+            var tableName = typeof(T).GetTableNameOnly();
+            var param = new DynamicParameters();
+
+            // Build WHERE
+            //WHERE 1 = 1
+            //     AND(`ProductCode` LIKE @Keyword OR `ProductName` LIKE @Keyword)
+            //     AND `ProductName` LIKE @Filter_0
+            //     AND `Price` >= @Filter_1
+            var sqlWhere = SqlFilterBuilder.BuildWhereClause<T>(
+                request.Keyword, request.Filters, ref param);
+
+            // Build ORDER BY
+            //ORDER BY CreatedDate DESC
+            var sqlOrderBy = SqlFilterBuilder.BuildOrderByClause<T>(
+                request.SortBy, request.SortDirection);
+
+            // Validate paging
+            if (request.PageNumber <= 0) request.PageNumber = 1;
+            if (request.PageSize <= 0) request.PageSize = 10;
+
+            var offset = (request.PageNumber - 1) * request.PageSize;
+            param.Add("@Offset", offset);
+            param.Add("@PageSize", request.PageSize);
+
+            // đếm tổng bản ghi
+            var sqlCount = $"SELECT COUNT(*) FROM `{tableName}` {sqlWhere}";
+
+            // lấy data
+            var sqlData = $"SELECT * FROM `{tableName}` {sqlWhere} {sqlOrderBy} LIMIT @PageSize OFFSET @Offset";
+
+            using var cnn = new MySqlConnection(connectionString);
+            var totalRecord = await cnn.ExecuteScalarAsync<int>(sqlCount, param);
+            var data = (await cnn.QueryAsync<T>(sqlData, param)).ToList();
+
+            return new PagingResult<T>
+            {
+                TotalRecord = totalRecord,
+                TotalPage = (int)Math.Ceiling((double)totalRecord / request.PageSize),
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                Data = data
+            };
+        }
     }
 }

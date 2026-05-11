@@ -18,6 +18,7 @@ namespace MISA.PRODUCTION.API.Controllers
             _shiftBL = shiftBL;
         }
 
+        #region API nhân bản ca làm việc
         /// <summary>
         /// Hàm nhân bản ca làm việc
         /// </summary>
@@ -50,8 +51,10 @@ namespace MISA.PRODUCTION.API.Controllers
                 });
             }
         }
+        #endregion
 
 
+        #region API chuyển đổi trạng thái cho ca làm việc: sử dụng -> ngưng sử dụng
         [HttpPut("toggle-status")]
         public async Task<IActionResult> ToggleStatus([FromBody] ToggleStatusRequest request)
         {
@@ -78,6 +81,7 @@ namespace MISA.PRODUCTION.API.Controllers
                     MoreInfo = ex.Data
                 });
             }
-        }
+        } 
+        #endregion
     }
 }

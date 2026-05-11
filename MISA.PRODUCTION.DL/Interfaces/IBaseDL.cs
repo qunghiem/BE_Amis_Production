@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.PRODUCTION.Common.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,5 +23,8 @@ namespace MISA.PRODUCTION.DL.Interfaces
 
         // Hàm xóa bản ghi: 1 hoặc nhiều bản ghi cùng lúc
         Task<int> Delete(List<Guid> ids);
+        
+        // Hàm lấy dữ liệu có phân trang và lọc
+        Task<PagingResult<T>> GetFilterPaging(FilterPagingRequest request);
     }
 }

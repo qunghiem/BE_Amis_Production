@@ -152,6 +152,27 @@ namespace MISA.PRODUCTION.API.Controllers
                     MoreInfo = ex.Data
                 });
             }
+        }
+        #endregion
+
+        #region Tìm kiếm kết hợp phân trang, lọc nhiều điều kiện
+        [HttpPost("filter-paging")]
+        public async Task<IActionResult> GetFilterPaging([FromBody] FilterPagingRequest request)
+        {
+            try
+            {
+                var res = await _baseBL.GetFilterPaging(request);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    DevMsg = ex.Message,
+                    UserMsg = ResourceVN.Exception,
+                    MoreInfo = ex.Data
+                });
+            }
         } 
         #endregion
     }

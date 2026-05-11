@@ -2,6 +2,7 @@
 using MISA.PRODUCTION.Common.Attributes;
 using MISA.PRODUCTION.Common.Base;
 using MISA.PRODUCTION.Common.Extension;
+using MISA.PRODUCTION.Common.Model;
 using MISA.PRODUCTION.DL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -106,6 +107,12 @@ namespace MISA.PRODUCTION.BL.Base
         public async Task<int> Delete(List<Guid> ids)
         {
             return await _baseDL.Delete(ids);
+        }
+
+        // Hàm tìm kiếm có phân trang và lọc
+        public async Task<PagingResult<T>> GetFilterPaging(FilterPagingRequest request)
+        {
+            return await _baseDL.GetFilterPaging(request);
         }
 
     }

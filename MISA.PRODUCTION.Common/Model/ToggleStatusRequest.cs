@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MISA.PRODUCTION.Common.Model
 {
+    /// <summary>
+    /// Yêu cầu thay đổi trạng thái
+    /// </summary>
     public class ToggleStatusRequest
     {
         // Danh sách Id của các bản ghi cần thay đổi trạng thái

@@ -20,7 +20,8 @@ namespace MISA.PRODUCTION.BL.Interfaces
 
         // Hàm xóa bản ghi: 1 hoặc nhiều bản ghi cùng lúc
         Task<int> Delete(List<Guid> ids);
-
         
+        // Hàm tìm kiếm có phân trang kết hợp lọc nhiều điều kiện, sắp xếp
+        Task<PagingResult<T>> GetFilterPaging(FilterPagingRequest request);
     }
 }
