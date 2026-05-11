@@ -50,5 +50,34 @@ namespace MISA.PRODUCTION.API.Controllers
                 });
             }
         }
+
+
+        [HttpPut("toggle-status")]
+        public async Task<IActionResult> ToggleStatus([FromBody] ToggleStatusRequest request)
+        {
+            try
+            {
+                var res = await _shiftBL.ToggleStatus(request.Ids, request.Status);
+                return Ok(res);
+            }
+            catch (ValidateException ex)
+            {
+                return BadRequest(new ErrorResult
+                {
+                    DevMsg = ex.Message,
+                    UserMsg = ex.Message,
+                    MoreInfo = ex.Errors
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    DevMsg = ex.Message,
+                    UserMsg = ResourceVN.Exception,
+                    MoreInfo = ex.Data
+                });
+            }
+        }
     }
 }

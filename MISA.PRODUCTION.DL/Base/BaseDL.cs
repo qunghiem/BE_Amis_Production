@@ -14,7 +14,7 @@ namespace MISA.PRODUCTION.DL.Base
     public class BaseDL<T> : IBaseDL<T>
     {
         // Chuỗi kết nối đến database
-        private string connectionString = "server=localhost;port=3306;database=misa_amisproduction;user=root;password=root;";
+        protected string connectionString = "server=localhost;port=3306;database=misa_amisproduction;user=root;password=root;";
 
         /// <summary>
         /// Lấy bản ghi theo id
@@ -55,7 +55,7 @@ namespace MISA.PRODUCTION.DL.Base
             // Lấy danh sách các cột và giá trị tương ứng từ đối tượng entity
             var columns = typeof(T).GetAllColumns();
 
-            // Gán ID mới nếu chưa có
+            // Gán ID mới nếu chưa có, có thể đã tạo ở lúc click nhân bản
             var pkProp = typeof(T).GetProperty(primaryKeyName);
             if (pkProp != null)
             {

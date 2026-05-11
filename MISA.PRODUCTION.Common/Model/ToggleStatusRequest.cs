@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MISA.PRODUCTION.Common.Model
+{
+    public class ToggleStatusRequest
+    {
+        // Danh sách Id của các bản ghi cần thay đổi trạng thái
+        public List<Guid> Ids { get; set; } = new List<Guid>();
+        public int Status { get; set; }     // 1: Sử dụng, 0: Ngừng sử dụng
+    }
+}

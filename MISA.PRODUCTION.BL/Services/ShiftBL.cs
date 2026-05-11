@@ -3,6 +3,7 @@ using MISA.PRODUCTION.BL.Interfaces;
 using MISA.PRODUCTION.Common.Extension;
 using MISA.PRODUCTION.Common.Model;
 using MISA.PRODUCTION.DL.Interfaces;
+using MISA.PRODUCTION.DL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,14 @@ namespace MISA.PRODUCTION.BL.Services
 {
     public class ShiftBL : BaseBL<ProductionShift>, IShiftBL
     {
-        public ShiftBL(IBaseDL<ProductionShift> baseDL) : base(baseDL)
+        private IShiftDL _shiftDL;
+        //public ShiftBL(IBaseDL<ProductionShift> baseDL) : base(baseDL)
+        //{
+        //}
+
+        public ShiftBL(IShiftDL shiftDL) : base(shiftDL)
         {
+            _shiftDL = shiftDL;
         }
 
         /// <summary>
@@ -31,7 +38,7 @@ namespace MISA.PRODUCTION.BL.Services
             // Gọi base (để check trùng + insert)
             return await base.Insert(entity);
         }
-
+         
         /// <summary>
         /// Override Update để thêm validate riêng cho Shift
         /// </summary>
@@ -141,7 +148,7 @@ namespace MISA.PRODUCTION.BL.Services
             // Copy toàn bộ trừ ID và Mã ca
             var newShift = new ProductionShift
             {
-                ProductionShiftID = Guid.NewGuid(),
+                //ProductionShiftID = Guid.NewGuid(),
                 ProductionShiftCode = "",               // để Mã ca trống, FE cho user nhập
                 ProductionShiftName = source.ProductionShiftName,
                 StartTime = source.StartTime,
@@ -155,6 +162,18 @@ namespace MISA.PRODUCTION.BL.Services
             };
 
             return newShift;    // Chỉ trả về data, KHÔNG lưu DB
+        }
+
+
+        public async Task<int> ToggleStatus(List<Guid> ids, int status)
+        {
+            if (ids == null || ids.Count == 0)
+                throw new ValidateException("Không có dữ liệu để cập nhật");
+
+            if (status != 0 && status != 1)
+                throw new ValidateException("Trạng thái không hợp lệ");
+
+            return await _shiftDL.ToggleStatus(ids, status);
         }
     }
 }

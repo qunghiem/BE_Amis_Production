@@ -11,5 +11,8 @@ namespace MISA.PRODUCTION.BL.Interfaces
     {
         // Hàm nhân bản bản ghi
         Task<ProductionShift> DuplicateShift(Guid id);
+
+        // Hàm bật/tắt trạng thái ca làm việc: sử dụng, ngung sử dụng
+        Task<int> ToggleStatus(List<Guid> ids, int status);
     }
 }
