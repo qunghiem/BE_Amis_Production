@@ -13,5 +13,8 @@ namespace MISA.PRODUCTION.BL.Interfaces
 
         // Hàm thêm mới bản ghi
         Task<int> Insert(T entity);
+
+        // Hàm cập nhật bản ghi
+        Task<int> Update(T entity);
     }
 }

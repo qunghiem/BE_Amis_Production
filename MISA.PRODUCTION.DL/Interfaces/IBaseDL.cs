@@ -16,5 +16,8 @@ namespace MISA.PRODUCTION.DL.Interfaces
 
         // Hàm kiểm tra trùng lặp dữ liệu
         Task<bool> CheckDuplicate(string propName, object value, Guid? excludeId);
+
+        // Hàm cập nhật bản ghi
+        Task<int> Update(T entity);
     }
 }

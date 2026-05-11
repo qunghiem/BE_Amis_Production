@@ -45,6 +45,7 @@ namespace MISA.PRODUCTION.API.Controllers
                     });
                 }
             }
+            // bắt lỗi server: lỗi kết nối database, lỗi code, ...
             catch (Exception ex)
             {
                 return StatusCode(500, new ErrorResult
@@ -57,6 +58,7 @@ namespace MISA.PRODUCTION.API.Controllers
         }
         #endregion
 
+        #region Thêm mới bản ghi
         /// <summary>
         /// Thêm mới bản ghi
         /// </summary>
@@ -91,5 +93,44 @@ namespace MISA.PRODUCTION.API.Controllers
                 });
             }
         }
+        #endregion
+
+        #region Sửa bản ghi
+        /// <summary>
+        /// Cập nhật bản ghi
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] T entity)
+        {
+            try
+            {
+                var res = await _baseBL.Update(entity);
+                return Ok(res);
+            }
+            // bắt lỗi người dùng: dữ liệu không hợp lệ, thiếu trường bắt buộc, ...
+            catch (ValidateException ex)
+            {
+                return BadRequest(new ErrorResult
+                {
+                    DevMsg = ex.Message,
+                    UserMsg = ex.Message,
+                    MoreInfo = ex.Errors
+                });
+            }
+            // bắt lỗi server: lỗi kết nối database, lỗi code, ...
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    DevMsg = ex.Message,
+                    UserMsg = ResourceVN.Exception,
+                    MoreInfo = ex.Data
+                });
+            }
+        } 
+        #endregion
     }
 }

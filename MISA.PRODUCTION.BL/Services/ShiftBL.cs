@@ -33,6 +33,23 @@ namespace MISA.PRODUCTION.BL.Services
         }
 
         /// <summary>
+        /// Override Update để thêm validate riêng cho Shift
+        /// </summary>
+
+        public override async Task<int> Update(ProductionShift entity)
+        {
+            // Validate nghiệp vụ riêng
+            ValidateShift(entity);
+
+            // Tính toán giờ làm việc và giờ nghỉ
+
+            CalculateHours(entity);
+
+            // Gọi base (để check trùng + Update)
+            return await base.Update(entity);
+        }
+
+        /// <summary>
         /// Validate các trường bắt buộc + độ dài + giờ nghỉ phải nằm trong giờ làm
         /// </summary>
         private void ValidateShift(ProductionShift entity)
@@ -40,6 +57,7 @@ namespace MISA.PRODUCTION.BL.Services
             // Tạo list lỗi để lưu các lỗi phát sinh
             var errors = new List<string>();
 
+            // Validate các trường bắt buộc
             if (string.IsNullOrWhiteSpace(entity.ProductionShiftCode))
                 errors.Add("Mã ca không được để trống");
 
@@ -52,6 +70,7 @@ namespace MISA.PRODUCTION.BL.Services
             if (entity.EndTime == default)
                 errors.Add("Giờ hết ca không được để trống");
 
+            // Validate độ dài
             if (entity.ProductionShiftCode?.Length > 20)
                 errors.Add("Mã ca tối đa 20 ký tự");
 
@@ -59,6 +78,7 @@ namespace MISA.PRODUCTION.BL.Services
                 errors.Add("Tên ca tối đa 50 ký tự");
 
 
+            // Validate giờ nghỉ phải nằm trong khoảng giờ làm
             if (entity.BreakStartTime.HasValue && entity.BreakEndTime.HasValue)
             {
                 if (entity.BreakStartTime.Value < entity.StartTime)
@@ -71,6 +91,7 @@ namespace MISA.PRODUCTION.BL.Services
                     errors.Add("Giờ bắt đầu nghỉ phải trước giờ kết thúc nghỉ");
             }
 
+            // Nếu có lỗi, ném ra ValidateException với danh sách lỗi
             if (errors.Count > 0)
                 throw new ValidateException(errors);
         }

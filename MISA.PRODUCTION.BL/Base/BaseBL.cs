@@ -1,5 +1,6 @@
 ﻿using MISA.PRODUCTION.BL.Interfaces;
 using MISA.PRODUCTION.Common.Attributes;
+using MISA.PRODUCTION.Common.Base;
 using MISA.PRODUCTION.Common.Extension;
 using MISA.PRODUCTION.DL.Interfaces;
 using System;
@@ -33,6 +34,17 @@ namespace MISA.PRODUCTION.BL.Base
             return await _baseDL.Insert(entity);
         }
 
+        
+
+        public virtual async Task<int> Update(T entity) { 
+
+            // Check trùng, truyền isInsert: false → loại trừ chính nó
+            await ValidateCheckDuplicate(entity, isInsert: false);
+
+            return await _baseDL.Update(entity);
+        }
+
+
         /// <summary>
         /// Check trùng các property có gắn [CheckDuplicate]
         /// </summary>
@@ -43,6 +55,8 @@ namespace MISA.PRODUCTION.BL.Base
 
             // Lấy ID để loại trừ khi update
             Guid? excludeId = null;
+
+            // Nếu là update, lấy ID của entity để loại trừ khi kiểm tra trùng lặp
             if (!isInsert)
             {
                 // Lấy giá trị ID của entity để loại trừ khi kiểm tra trùng lặp
@@ -83,5 +97,6 @@ namespace MISA.PRODUCTION.BL.Base
                 throw new ValidateException(errors);
             }
         }
+
     }
 }

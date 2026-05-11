@@ -37,8 +37,13 @@ namespace MISA.PRODUCTION.DL.Base
             var res = await cnn.QueryFirstOrDefaultAsync<T>(sql, new { Id = id });
 
             return res;
-        } 
+        }
 
+        /// <summary>
+        /// Thêm mới bản ghi vào database, trả về số bản ghi bị ảnh hưởng (thường là 1 nếu thành công, 0 nếu thất bại)
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public async Task<int> Insert(T entity)
         {
             // Lấy tên bảng từ kiểu dữ liệu T
@@ -60,6 +65,7 @@ namespace MISA.PRODUCTION.DL.Base
                     pkProp.SetValue(entity, Guid.NewGuid());
                 }
             }
+
             // Build: INSERT INTO `ProductionShift` (`Col1`, `Col2`, ...) VALUES (@Col1, @Col2, ...)
             var columnList = string.Join(", ", columns.Select(c => $"`{c}`"));
             var paramList = string.Join(", ", columns.Select(c => $"@{c}"));
@@ -67,6 +73,34 @@ namespace MISA.PRODUCTION.DL.Base
 
             // Gán param từ giá trị property
             var param = new DynamicParameters();
+            foreach (var col in columns)
+            {
+                param.Add($"@{col}", entity.GetValueProperty(col));
+            }
+
+            using var cnn = new MySqlConnection(connectionString);
+            return await cnn.ExecuteAsync(sql, param);
+        }      
+
+        public async Task<int> Update(T entity)
+        {
+            // Lấy tên bảng từ kiểu dữ liệu T
+            var tableName = typeof(T).GetTableNameOnly();
+            // Lấy tên khóa chính từ kiểu dữ liệu T
+            var primaryKeyName = typeof(T).GetPrimaryKey();
+            // Lấy danh sách các cột
+            var columns = typeof(T).GetAllColumns();
+
+            // Build: UPDATE `ProductionShift` SET `Col1` = @Col1, `Col2` = @Col2, ... WHERE `ProductionShiftID` = @ProductionShiftID
+            var setClauses = columns
+                .Where(c => c != primaryKeyName)
+                .Select(c => $"`{c}` = @{c}");
+
+            var sql = $"UPDATE `{tableName}` SET {string.Join(", ", setClauses)} WHERE `{primaryKeyName}` = @{primaryKeyName}";
+
+            var param = new DynamicParameters();
+
+            // lọc và map param
             foreach (var col in columns)
             {
                 param.Add($"@{col}", entity.GetValueProperty(col));
