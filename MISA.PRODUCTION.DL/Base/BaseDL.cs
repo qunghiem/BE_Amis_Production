@@ -29,7 +29,7 @@ namespace MISA.PRODUCTION.DL.Base
             // Lấy tên khóa chính từ kiểu dữ liệu T
             var primaryKeyName = typeof(T).GetPrimaryKey();
 
-            var sql = $"SELECT * FROM {tableName} WHERE {primaryKeyName} = @Id";
+            var sql = $"SELECT * FROM `{tableName}` WHERE `{primaryKeyName}` = @Id";
             //SELECT* FROM `ProductionShift` WHERE `ProductionShiftID` = @Id
 
             using var cnn = new MySqlConnection(connectionString);

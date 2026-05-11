@@ -37,7 +37,13 @@ namespace MISA.PRODUCTION.BL.Base
 
         
 
-        public virtual async Task<int> Update(T entity) { 
+        public virtual async Task<int> Update(T entity) 
+        {
+            // cập nhật cả ModifiedDate
+            if (entity is BaseEntity baseEntity)
+            {
+                baseEntity.ModifiedDate = DateTime.Now;
+            }
 
             // Check trùng, truyền isInsert: false → loại trừ chính nó
             await ValidateCheckDuplicate(entity, isInsert: false);

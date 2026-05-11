@@ -88,11 +88,19 @@ namespace MISA.PRODUCTION.BL.Services
             // Validate giờ nghỉ phải nằm trong khoảng giờ làm
             if (entity.BreakStartTime.HasValue && entity.BreakEndTime.HasValue)
             {
-                if (entity.BreakStartTime.Value < entity.StartTime)
-                    errors.Add("Giờ bắt đầu nghỉ không được trước giờ vào ca");
+                // Chỉ validate khi ca KHÔNG xuyên ngày
+                if (entity.StartTime < entity.EndTime)
+                {
+                    if (entity.BreakStartTime.Value < entity.StartTime)
+                        errors.Add("Giờ bắt đầu nghỉ không được trước giờ vào ca");
 
-                if (entity.BreakEndTime.Value > entity.EndTime)
-                    errors.Add("Giờ kết thúc nghỉ không được sau giờ hết ca");
+                    if (entity.BreakEndTime.Value > entity.EndTime)
+                        errors.Add("Giờ kết thúc nghỉ không được sau giờ hết ca");
+                }
+
+                // Luôn check: giờ bắt đầu nghỉ phải trước giờ kết thúc nghỉ
+                if (entity.BreakStartTime.Value >= entity.BreakEndTime.Value)
+                    errors.Add("Giờ bắt đầu nghỉ phải trước giờ kết thúc nghỉ");
             }
 
             // Nếu có lỗi, ném ra ValidateException với danh sách lỗi

@@ -14,6 +14,12 @@ namespace MISA.PRODUCTION.DL.Repositories
 
     public class ShiftDL : BaseDL<ProductionShift>, IShiftDL
     {
+        /// <summary>
+        /// Hàm thay đổi trạng thái Sử dụng -> Ngưng sử dụng
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
         public async Task<int> ToggleStatus(List<Guid> ids, int status)
         {
             if (ids == null || ids.Count == 0) return 0;
