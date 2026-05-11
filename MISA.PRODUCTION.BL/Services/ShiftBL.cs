@@ -86,9 +86,6 @@ namespace MISA.PRODUCTION.BL.Services
 
                 if (entity.BreakEndTime.Value > entity.EndTime)
                     errors.Add("Giờ kết thúc nghỉ không được sau giờ hết ca");
-
-                if (entity.BreakStartTime.Value >= entity.BreakEndTime.Value)
-                    errors.Add("Giờ bắt đầu nghỉ phải trước giờ kết thúc nghỉ");
             }
 
             // Nếu có lỗi, ném ra ValidateException với danh sách lỗi
@@ -101,18 +98,29 @@ namespace MISA.PRODUCTION.BL.Services
         /// </summary>
         private void CalculateHours(ProductionShift entity)
         {
-            // Tính thời gian nghỉ
+            // Tính tổng giờ ca, nếu EndTime < StartTime → ca xuyên ngày → cộng 24h
+            var totalHours = (decimal)(entity.EndTime - entity.StartTime).TotalHours;
+            if (entity.EndTime <= entity.StartTime)
+            {
+                totalHours += 24;
+            }
+
+            // Tính giờ nghỉ, cũng +24 nếu nghỉ xuyên ngày
             if (entity.BreakStartTime.HasValue && entity.BreakEndTime.HasValue)
             {
-                entity.BreakHour = (decimal)(entity.BreakEndTime.Value - entity.BreakStartTime.Value).TotalHours;
+                var breakHours = (decimal)(entity.BreakEndTime.Value - entity.BreakStartTime.Value).TotalHours;
+                if (entity.BreakEndTime.Value <= entity.BreakStartTime.Value)
+                {
+                    breakHours += 24;
+                }
+                entity.BreakHour = breakHours;
             }
             else
             {
                 entity.BreakHour = 0;
             }
 
-            // Tính thời gian làm việc = (EndTime - StartTime) - BreakHour
-            var totalHours = (decimal)(entity.EndTime - entity.StartTime).TotalHours;
+            // Giờ làm thực = tổng giờ ca - giờ nghỉ
             entity.WorkHour = totalHours - entity.BreakHour;
         }
     }

@@ -139,5 +139,37 @@ namespace MISA.PRODUCTION.DL.Base
             // trả về true nếu có bản ghi nào trùng, false nếu không trùng
             return count > 0;
         }
+
+
+
+        /// <summary>
+        /// Xóa nhiều bản ghi cùng lúc bằng danh sách ID
+        /// </summary>
+        /// <param name="ids">Danh sách ID của các bản ghi cần xóa</param>
+        /// <returns>Số lượng bản ghi bị xóa</returns>
+        public async Task<int> Delete(List<Guid> ids)
+        {
+            if (ids == null || ids.Count == 0) return 0;
+
+            var tableName = typeof(T).GetTableNameOnly();
+
+            // Lấy Id khóa chính từ kiểu dữ liệu T
+            var primaryKey = typeof(T).GetPrimaryKey();
+
+            // Build: DELETE FROM `ProductionShift` WHERE `ProductionShiftID` IN (@Id_0, @Id_1, ...)
+            var param = new DynamicParameters();
+            var paramNames = new List<string>();
+            for (int i = 0; i < ids.Count; i++)
+            {
+                paramNames.Add($"@Id_{i}");
+                // Gán param @Id_0, @Id_1,... với giá trị tương ứng từ danh sách ids
+                param.Add($"@Id_{i}", ids[i]);
+            }
+
+            var sql = $"DELETE FROM `{tableName}` WHERE `{primaryKey}` IN ({string.Join(", ", paramNames)})";
+
+            using var cnn = new MySqlConnection(connectionString);
+            return await cnn.ExecuteAsync(sql, param);
+        }
     }
 }

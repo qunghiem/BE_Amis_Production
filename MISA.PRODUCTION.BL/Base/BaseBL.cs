@@ -98,5 +98,15 @@ namespace MISA.PRODUCTION.BL.Base
             }
         }
 
+        /// <summary>
+        /// Xóa nhiều bản ghi cùng lúc bằng danh sách ID
+        /// </summary>
+        /// <param name="ids">Danh sách ID của các bản ghi cần xóa</param>
+        /// <returns>Số lượng bản ghi bị xóa</returns>
+        public async Task<int> Delete(List<Guid> ids)
+        {
+            return await _baseDL.Delete(ids);
+        }
+
     }
 }

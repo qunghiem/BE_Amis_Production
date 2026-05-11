@@ -130,6 +130,28 @@ namespace MISA.PRODUCTION.API.Controllers
                     MoreInfo = ex.Data
                 });
             }
+        }
+        #endregion
+
+
+        #region Xóa 1 hoặc nhiều bản ghi cùng lúc
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] List<Guid> ids)
+        {
+            try
+            {
+                var res = await _baseBL.Delete(ids);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    DevMsg = ex.Message,
+                    UserMsg = ResourceVN.Exception,
+                    MoreInfo = ex.Data
+                });
+            }
         } 
         #endregion
     }

@@ -19,5 +19,8 @@ namespace MISA.PRODUCTION.DL.Interfaces
 
         // Hàm cập nhật bản ghi
         Task<int> Update(T entity);
+
+        // Hàm xóa bản ghi: 1 hoặc nhiều bản ghi cùng lúc
+        Task<int> Delete(List<Guid> ids);
     }
 }
