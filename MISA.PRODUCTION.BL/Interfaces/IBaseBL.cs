@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.PRODUCTION.Common.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +20,7 @@ namespace MISA.PRODUCTION.BL.Interfaces
 
         // Hàm xóa bản ghi: 1 hoặc nhiều bản ghi cùng lúc
         Task<int> Delete(List<Guid> ids);
+
+        
     }
 }

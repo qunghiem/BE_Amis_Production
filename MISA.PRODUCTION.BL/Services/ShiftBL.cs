@@ -123,5 +123,38 @@ namespace MISA.PRODUCTION.BL.Services
             // Giờ làm thực = tổng giờ ca - giờ nghỉ
             entity.WorkHour = totalHours - entity.BreakHour;
         }
+
+        /// <summary>
+        /// Hàm nhân bản ca làm việc: copy toàn bộ thông tin từ ca gốc, chỉ thay ID mới + Mã ca để trống
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="ValidateException"></exception>
+        public async Task<ProductionShift> DuplicateShift(Guid id)
+        {
+            // Lấy bản ghi gốc
+            var source = await _baseDL.GetById(id);
+
+            if (source == null)
+                throw new ValidateException("Không tìm thấy ca làm việc cần nhân bản");
+
+            // Copy toàn bộ trừ ID và Mã ca
+            var newShift = new ProductionShift
+            {
+                ProductionShiftID = Guid.NewGuid(),
+                ProductionShiftCode = "",               // để Mã ca trống, FE cho user nhập
+                ProductionShiftName = source.ProductionShiftName,
+                StartTime = source.StartTime,
+                EndTime = source.EndTime,
+                BreakStartTime = source.BreakStartTime,
+                BreakEndTime = source.BreakEndTime,
+                WorkHour = source.WorkHour,
+                BreakHour = source.BreakHour,
+                Description = source.Description,
+                ShiftStatus = source.ShiftStatus
+            };
+
+            return newShift;    // Chỉ trả về data, KHÔNG lưu DB
+        }
     }
 }

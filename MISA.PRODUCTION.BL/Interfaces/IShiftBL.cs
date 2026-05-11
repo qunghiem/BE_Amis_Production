@@ -9,5 +9,7 @@ namespace MISA.PRODUCTION.BL.Interfaces
 {
     public interface IShiftBL : IBaseBL<ProductionShift>
     {
+        // Hàm nhân bản bản ghi
+        Task<ProductionShift> DuplicateShift(Guid id);
     }
 }
