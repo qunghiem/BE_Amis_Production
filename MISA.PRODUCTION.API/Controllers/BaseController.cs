@@ -18,9 +18,9 @@ namespace MISA.PRODUCTION.API.Controllers
             _baseBL = baseBL;
         }
 
-        #region Lấy bản ghi theo ID
+        #region API Lấy bản ghi theo ID
         /// <summary>
-        /// Lấy bản ghi theo ID
+        /// API Lấy bản ghi theo ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -58,9 +58,9 @@ namespace MISA.PRODUCTION.API.Controllers
         }
         #endregion
 
-        #region Thêm mới bản ghi
+        #region API Thêm mới bản ghi
         /// <summary>
-        /// Thêm mới bản ghi
+        /// API Thêm mới bản ghi
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
@@ -95,9 +95,9 @@ namespace MISA.PRODUCTION.API.Controllers
         }
         #endregion
 
-        #region Sửa bản ghi
+        #region API Cập nhật/Sửa bản ghi
         /// <summary>
-        /// Cập nhật bản ghi
+        /// API Cập nhật/Sửa bản ghi
         /// </summary>
         /// <param name="id"></param>
         /// <param name="entity"></param>
@@ -134,7 +134,12 @@ namespace MISA.PRODUCTION.API.Controllers
         #endregion
 
 
-        #region Xóa 1 hoặc nhiều bản ghi cùng lúc
+        #region API Xóa 1 hoặc nhiều bản ghi cùng lúc
+        /// <summary>
+        /// API Xóa 1 hoặc nhiều bản ghi cùng lúc 
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] List<Guid> ids)
         {
@@ -155,7 +160,12 @@ namespace MISA.PRODUCTION.API.Controllers
         }
         #endregion
 
-        #region Tìm kiếm kết hợp phân trang, lọc nhiều điều kiện
+        #region API Tìm kiếm kết hợp phân trang, lọc nhiều điều kiện
+        /// <summary>
+        /// API Tìm kiếm kết hợp phân trang, lọc nhiều điều kiện
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost("filter-paging")]
         public async Task<IActionResult> GetFilterPaging([FromBody] FilterPagingRequest request)
         {

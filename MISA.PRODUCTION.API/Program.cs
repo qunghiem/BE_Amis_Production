@@ -4,6 +4,7 @@ using MISA.PRODUCTION.BL.Services;
 using MISA.PRODUCTION.DL.Base;
 using MISA.PRODUCTION.DL.Interfaces;
 using MISA.PRODUCTION.DL.Repositories;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
 // DI ??ng ký
 builder.Services.AddScoped(typeof(IBaseDL<>), typeof(BaseDL<>));

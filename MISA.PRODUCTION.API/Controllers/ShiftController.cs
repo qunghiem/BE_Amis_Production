@@ -20,7 +20,7 @@ namespace MISA.PRODUCTION.API.Controllers
 
         #region API nhân bản ca làm việc
         /// <summary>
-        /// Hàm nhân bản ca làm việc
+        /// API nhân bản ca làm việc
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -55,6 +55,11 @@ namespace MISA.PRODUCTION.API.Controllers
 
 
         #region API chuyển đổi trạng thái cho ca làm việc: sử dụng -> ngưng sử dụng
+        /// <summary>
+        /// API chuyển đổi trạng thái cho ca làm việc: sử dụng -> ngưng sử dụng
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut("toggle-status")]
         public async Task<IActionResult> ToggleStatus([FromBody] ToggleStatusRequest request)
         {
