@@ -18,7 +18,7 @@ namespace MISA.PRODUCTION.Common.Base
     public class BaseEntity
     {
         // Người tạo
-        public string? CreatedBy { get; set; }
+        public string? CreatedBy { get; set; } = "Hệ thống tự động";
 
         // Ngày tạo, mặc định là ngày hiện tại khi khởi tạo đối tượng
         public DateTime CreatedDate { get; set; } = DateTime.Now;

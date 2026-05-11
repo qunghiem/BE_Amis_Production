@@ -12,5 +12,6 @@ namespace MISA.PRODUCTION.DL.Repositories
 
     public class ShiftDL : BaseDL<ProductionShift>, IShiftDL
     {
+        
     }
 }

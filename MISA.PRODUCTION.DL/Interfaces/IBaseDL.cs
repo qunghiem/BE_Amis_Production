@@ -10,5 +10,11 @@ namespace MISA.PRODUCTION.DL.Interfaces
     {
         // Lấy bản ghi theo ID
         Task<T> GetById(Guid id);
+
+        // Hàm thêm mới bản ghi
+        Task<int> Insert(T entity);
+
+        // Hàm kiểm tra trùng lặp dữ liệu
+        Task<bool> CheckDuplicate(string propName, object value, Guid? excludeId);
     }
 }

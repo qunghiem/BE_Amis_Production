@@ -10,5 +10,8 @@ namespace MISA.PRODUCTION.BL.Interfaces
     {
         // Lấy bản ghi theo id
         Task<T> GetById(Guid id);
+
+        // Hàm thêm mới bản ghi
+        Task<int> Insert(T entity);
     }
 }
