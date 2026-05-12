@@ -142,6 +142,7 @@ namespace MISA.PRODUCTION.DL.Base
 
 
 
+
         /// <summary>
         /// Xóa nhiều bản ghi cùng lúc bằng danh sách ID
         /// </summary>
@@ -171,6 +172,9 @@ namespace MISA.PRODUCTION.DL.Base
             using var cnn = new MySqlConnection(connectionString);
             return await cnn.ExecuteAsync(sql, param);
         }
+
+
+
 
         /// <summary>
         /// Tìm kiếm có phân trang kết hợp lọc nhiều điều kiện, sắp xếp

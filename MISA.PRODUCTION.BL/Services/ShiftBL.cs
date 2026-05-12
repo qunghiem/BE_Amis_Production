@@ -172,7 +172,7 @@ namespace MISA.PRODUCTION.BL.Services
             return newShift;    // Chỉ trả về data, KHÔNG lưu DB
         }
 
-
+        // Hàm chuyển đổi trạng thái ca
         public async Task<int> ToggleStatus(List<Guid> ids, int status)
         {
             if (ids == null || ids.Count == 0)
