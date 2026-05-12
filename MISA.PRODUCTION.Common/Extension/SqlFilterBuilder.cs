@@ -47,7 +47,10 @@ namespace MISA.PRODUCTION.Common.Extension
                         continue;
 
                     // Kiểm tra property có tồn tại trên model không
-                    var prop = type.GetProperty(filter.Property);
+                    //var prop = type.GetProperty(filter.Property);
+                    var prop = type.GetProperties()
+                            .FirstOrDefault(p => string.Equals(p.Name, filter.Property, StringComparison.OrdinalIgnoreCase));
+
                     if (prop == null) continue;
 
                     // Tạo tên tham số động để tránh trùng lặp
