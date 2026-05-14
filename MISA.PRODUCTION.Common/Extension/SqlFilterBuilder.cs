@@ -131,19 +131,37 @@ namespace MISA.PRODUCTION.Common.Extension
         /// sortBy: tên cột muốn sắp xếp
         /// sortDirection: hướng sắp xếp (ASC hoặc DESC)
         /// </summary>
+        //public static string BuildOrderByClause<T>(string? sortBy, string? sortDirection)
+        //{
+        //    // mặc định sắp xếp theo ngày tạo giảm dần-> mới nhất lên đầu
+        //    if (string.IsNullOrWhiteSpace(sortBy)) return " ORDER BY CreatedDate DESC";
+
+        //    // Kiểm tra cột có tồn tại không
+        //    var prop = typeof(T).GetProperty(sortBy);
+        //    if (prop == null) return " ORDER BY CreatedDate DESC";
+
+        //    var direction = string.Equals(sortDirection, "DESC", StringComparison.OrdinalIgnoreCase)
+        //        ? "DESC" : "ASC";
+
+        //    var res = $" ORDER BY `{sortBy}` {direction}";
+
+        //    return res; //ORDER BY CreatedDate DESC
+        //}
+
         public static string BuildOrderByClause<T>(string? sortBy, string? sortDirection)
         {
-            // mặc định sắp xếp theo ngày tạo giảm dần-> mới nhất lên đầu
             if (string.IsNullOrWhiteSpace(sortBy)) return " ORDER BY CreatedDate DESC";
 
-            // Kiểm tra cột có tồn tại không
-            var prop = typeof(T).GetProperty(sortBy);
+            // ★ Case-insensitive lookup (giống BuildWhereClause)
+            var prop = typeof(T).GetProperties()
+                .FirstOrDefault(p => string.Equals(p.Name, sortBy, StringComparison.OrdinalIgnoreCase));
             if (prop == null) return " ORDER BY CreatedDate DESC";
 
             var direction = string.Equals(sortDirection, "DESC", StringComparison.OrdinalIgnoreCase)
                 ? "DESC" : "ASC";
 
-            return $" ORDER BY `{sortBy}` {direction}"; //ORDER BY CreatedDate DESC
+            // ★ Dùng prop.Name (đúng case) thay vì sortBy từ frontend
+            return $" ORDER BY `{prop.Name}` {direction}";
         }
     }
 }
