@@ -71,11 +71,11 @@ namespace MISA.PRODUCTION.BL.Services
             if (string.IsNullOrWhiteSpace(entity.ProductionShiftName))
                 errors.Add("Tên ca không được để trống");
 
-            if (entity.StartTime == default)
-                errors.Add("Giờ vào ca không được để trống");
+            //if (entity.StartTime == default)
+            //    errors.Add("Giờ vào ca không được để trống");
 
-            if (entity.EndTime == default)
-                errors.Add("Giờ hết ca không được để trống");
+            //if (entity.EndTime == default)
+            //    errors.Add("Giờ hết ca không được để trống");
 
             // Validate độ dài
             if (entity.ProductionShiftCode?.Length > 20)
@@ -128,7 +128,7 @@ namespace MISA.PRODUCTION.BL.Services
                 {
                     breakHours += 24;
                 }
-                entity.BreakHour = breakHours;
+                entity.BreakHour = Math.Ceiling(breakHours); ;
             }
             else
             {
@@ -136,7 +136,8 @@ namespace MISA.PRODUCTION.BL.Services
             }
 
             // Giờ làm thực = tổng giờ ca - giờ nghỉ
-            entity.WorkHour = totalHours - entity.BreakHour;
+            entity.WorkHour = Math.Ceiling(totalHours - entity.BreakHour);
+
         }
 
         /// <summary>
