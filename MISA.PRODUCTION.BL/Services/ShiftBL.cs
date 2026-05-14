@@ -92,10 +92,10 @@ namespace MISA.PRODUCTION.BL.Services
                 if (entity.StartTime < entity.EndTime)
                 {
                     if (entity.BreakStartTime.Value < entity.StartTime)
-                        errors.Add("Giờ bắt đầu nghỉ không được trước giờ vào ca");
+                        errors.Add("Thời gian bắt đầu nghỉ giữa ca phải nằm trong khoảng thời gian tính từ giờ vào ca đến giờ hết ca. Vui lòng kiểm tra lại.");
 
                     if (entity.BreakEndTime.Value > entity.EndTime)
-                        errors.Add("Giờ kết thúc nghỉ không được sau giờ hết ca");
+                        errors.Add("Thời gian kết thúc nghỉ giữa ca phải nằm trong khoảng thời gian tính từ giờ vào ca đến giờ hết ca. Vui lòng kiểm tra lại.");
                 }
 
                 // Luôn check: giờ bắt đầu nghỉ phải trước giờ kết thúc nghỉ
