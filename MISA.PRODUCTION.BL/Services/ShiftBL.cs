@@ -1,5 +1,7 @@
-﻿using MISA.PRODUCTION.BL.Base;
+﻿using ClosedXML.Excel;
+using MISA.PRODUCTION.BL.Base;
 using MISA.PRODUCTION.BL.Interfaces;
+using MISA.PRODUCTION.Common.Enums;
 using MISA.PRODUCTION.Common.Extension;
 using MISA.PRODUCTION.Common.Model;
 using MISA.PRODUCTION.DL.Interfaces;
@@ -9,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClosedXML.Excel;
 
 namespace MISA.PRODUCTION.BL.Services
 {
@@ -175,12 +176,12 @@ namespace MISA.PRODUCTION.BL.Services
         }
 
         // Hàm chuyển đổi trạng thái ca
-        public async Task<int> ToggleStatus(List<Guid> ids, int status)
+        public async Task<int> ToggleStatus(List<Guid> ids, ShiftStatus status)
         {
             if (ids == null || ids.Count == 0)
                 throw new ValidateException("Không có dữ liệu để cập nhật");
 
-            if (status != 0 && status != 1)
+            if (!Enum.IsDefined(status))
                 throw new ValidateException("Trạng thái không hợp lệ");
 
             return await _shiftDL.ToggleStatus(ids, status);
@@ -225,7 +226,7 @@ namespace MISA.PRODUCTION.BL.Services
                 ws.Cell(r, 7).Value = s.BreakEndTime?.ToString(@"hh\:mm") ?? "";
                 ws.Cell(r, 8).Value = s.WorkHour;
                 ws.Cell(r, 9).Value = s.BreakHour;
-                ws.Cell(r, 10).Value = s.ShiftStatus == 1 ? "Đang sử dụng" : "Ngừng sử dụng";
+                ws.Cell(r, 10).Value = s.ShiftStatus == ShiftStatus.Active? "Đang sử dụng" : "Ngừng sử dụng";
                 ws.Cell(r, 11).Value = s.CreatedBy ?? "";
                 ws.Cell(r, 12).Value = s.CreatedDate.ToString("dd/MM/yyyy");
                 ws.Cell(r, 13).Value = s.ModifiedBy ?? "";

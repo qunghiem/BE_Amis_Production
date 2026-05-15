@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using MISA.PRODUCTION.Common.Enums;
 using MISA.PRODUCTION.Common.Model;
 using MISA.PRODUCTION.DL.Base;
 using MISA.PRODUCTION.DL.Interfaces;
@@ -20,7 +21,7 @@ namespace MISA.PRODUCTION.DL.Repositories
         /// <param name="ids"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public async Task<int> ToggleStatus(List<Guid> ids, int status)
+        public async Task<int> ToggleStatus(List<Guid> ids, ShiftStatus status)
         {
             if (ids == null || ids.Count == 0) return 0;
 
@@ -33,7 +34,7 @@ namespace MISA.PRODUCTION.DL.Repositories
                 paramNames.Add($"@Id_{i}");
                 param.Add($"@Id_{i}", ids[i]);
             }
-            param.Add("@Status", status);
+            param.Add("@Status", (int)status);
             param.Add("@ModifiedDate", DateTime.Now);
 
             var sql = $@"UPDATE `ProductionShift` 

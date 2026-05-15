@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MISA.PRODUCTION.Common.Enums;
 
 namespace MISA.PRODUCTION.Common.Model
 {
@@ -72,6 +73,6 @@ namespace MISA.PRODUCTION.Common.Model
         /// <summary>
         /// Trạng thái ca (1: Hoạt động, 0: Ngừng hoạt động)
         /// </summary>
-        public int ShiftStatus { get; set; } = 1;
+        public ShiftStatus ShiftStatus { get; set; } = ShiftStatus.Active;
     }
 }

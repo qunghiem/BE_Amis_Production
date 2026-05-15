@@ -1,4 +1,5 @@
-﻿using MISA.PRODUCTION.Common.Model;
+﻿using MISA.PRODUCTION.Common.Enums;
+using MISA.PRODUCTION.Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace MISA.PRODUCTION.BL.Interfaces
         Task<ProductionShift> DuplicateShift(Guid id);
 
         // Hàm bật/tắt trạng thái ca làm việc: sử dụng, ngung sử dụng
-        Task<int> ToggleStatus(List<Guid> ids, int status);
+        Task<int> ToggleStatus(List<Guid> ids, ShiftStatus status);
 
         // Tạo Excel
         Task<byte[]> ExportExcel(FilterPagingRequest request);

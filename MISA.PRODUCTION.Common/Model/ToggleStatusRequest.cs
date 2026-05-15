@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MISA.PRODUCTION.Common.Enums;
 
 namespace MISA.PRODUCTION.Common.Model
 {
@@ -13,6 +14,6 @@ namespace MISA.PRODUCTION.Common.Model
     {
         // Danh sách Id của các bản ghi cần thay đổi trạng thái
         public List<Guid> Ids { get; set; } = new List<Guid>();
-        public int Status { get; set; }     // 1: Sử dụng, 0: Ngừng sử dụng
+        public ShiftStatus Status { get; set; }     // 1: Sử dụng, 0: Ngừng sử dụng
     }
 }
