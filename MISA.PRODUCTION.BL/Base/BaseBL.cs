@@ -31,6 +31,11 @@ namespace MISA.PRODUCTION.BL.Base
         // virtual để các lớp con có thể override nếu cần
         public virtual async Task<int> Insert(T entity)
         {
+            if (entity is BaseEntity baseEntity)
+            {
+                baseEntity.CreatedDate = DateTime.Now;
+                baseEntity.ModifiedDate = DateTime.Now;
+            }
             await ValidateCheckDuplicate(entity, isInsert: true); 
             return await _baseDL.Insert(entity);
         }
