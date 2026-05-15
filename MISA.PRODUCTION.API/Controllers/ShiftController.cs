@@ -86,7 +86,34 @@ namespace MISA.PRODUCTION.API.Controllers
                     MoreInfo = ex.Data
                 });
             }
-        } 
+        }
         #endregion
+
+
+        /// <summary>
+        /// Xuất file Excel danh sách ca làm việc theo điều kiện lọc, phân trang
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("export-excel")]
+        public async Task<IActionResult> ExportExcel([FromBody] FilterPagingRequest request)
+        {
+            try
+            {
+                var fileBytes = await _shiftBL.ExportExcel(request);
+                return File(fileBytes,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    $"CaLamViec_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorResult
+                {
+                    DevMsg = ex.Message,
+                    UserMsg = ResourceVN.Exception,
+                    MoreInfo = ex.Data
+                });
+            }
+        }
     }
 }

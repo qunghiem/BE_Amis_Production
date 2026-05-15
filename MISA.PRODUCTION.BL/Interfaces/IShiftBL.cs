@@ -14,5 +14,8 @@ namespace MISA.PRODUCTION.BL.Interfaces
 
         // Hàm bật/tắt trạng thái ca làm việc: sử dụng, ngung sử dụng
         Task<int> ToggleStatus(List<Guid> ids, int status);
+
+        // Tạo Excel
+        Task<byte[]> ExportExcel(FilterPagingRequest request);
     }
 }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
 
 namespace MISA.PRODUCTION.BL.Services
 {
@@ -183,6 +184,59 @@ namespace MISA.PRODUCTION.BL.Services
                 throw new ValidateException("Trạng thái không hợp lệ");
 
             return await _shiftDL.ToggleStatus(ids, status);
+        }
+
+        // Hàm Tạo Excel
+        public async Task<byte[]> ExportExcel(FilterPagingRequest request)
+        {
+            var data = await _baseDL.GetFilterAll(request);
+
+            using var workbook = new XLWorkbook();
+            var ws = workbook.Worksheets.Add("Ca làm việc");
+
+            // Header — đúng thứ tự UI
+            var headers = new[]
+            {
+        "STT", "Mã ca", "Tên ca", "Giờ vào ca", "Giờ hết ca",
+        "Bắt đầu nghỉ giữa ca", "Kết thúc nghỉ giữa ca",
+        "Thời gian làm việc (giờ)", "Thời gian nghỉ giữa ca (giờ)",
+        "Trạng thái", "Người tạo", "Ngày tạo", "Người sửa", "Ngày sửa"
+    };
+
+            for (int i = 0; i < headers.Length; i++)
+            {
+                var cell = ws.Cell(1, i + 1);
+                cell.Value = headers[i];
+                cell.Style.Font.Bold = true;
+            }
+
+            // Data
+            for (int row = 0; row < data.Count; row++)
+            {
+                var s = data[row];
+                var r = row + 2;
+
+                ws.Cell(r, 1).Value = row + 1;
+                ws.Cell(r, 2).Value = s.ProductionShiftCode;
+                ws.Cell(r, 3).Value = s.ProductionShiftName;
+                ws.Cell(r, 4).Value = s.StartTime.ToString(@"hh\:mm");
+                ws.Cell(r, 5).Value = s.EndTime.ToString(@"hh\:mm");
+                ws.Cell(r, 6).Value = s.BreakStartTime?.ToString(@"hh\:mm") ?? "";
+                ws.Cell(r, 7).Value = s.BreakEndTime?.ToString(@"hh\:mm") ?? "";
+                ws.Cell(r, 8).Value = s.WorkHour;
+                ws.Cell(r, 9).Value = s.BreakHour;
+                ws.Cell(r, 10).Value = s.ShiftStatus == 1 ? "Đang sử dụng" : "Ngừng sử dụng";
+                ws.Cell(r, 11).Value = s.CreatedBy ?? "";
+                ws.Cell(r, 12).Value = s.CreatedDate.ToString("dd/MM/yyyy");
+                ws.Cell(r, 13).Value = s.ModifiedBy ?? "";
+                ws.Cell(r, 14).Value = s.ModifiedDate.ToString("dd/MM/yyyy");
+            }
+
+            ws.Columns().AdjustToContents();
+
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            return stream.ToArray();
         }
     }
 }

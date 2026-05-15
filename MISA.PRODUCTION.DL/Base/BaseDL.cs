@@ -226,5 +226,24 @@ namespace MISA.PRODUCTION.DL.Base
                 Data = data
             };
         }
+
+
+        // Lấy tất cả data k phân trang để làm Excel
+
+        public async Task<List<T>> GetFilterAll(FilterPagingRequest request)
+        {
+            var tableName = typeof(T).GetTableNameOnly();
+            var param = new DynamicParameters();
+
+            var sqlWhere = SqlFilterBuilder.BuildWhereClause<T>(
+                request.Keyword, request.Filters, ref param);
+            var sqlOrderBy = SqlFilterBuilder.BuildOrderByClause<T>(
+                request.SortBy, request.SortDirection);
+
+            var sql = $"SELECT * FROM `{tableName}` {sqlWhere} {sqlOrderBy}";
+
+            using var cnn = new MySqlConnection(connectionString);
+            return (await cnn.QueryAsync<T>(sql, param)).ToList();
+        }
     }
 }

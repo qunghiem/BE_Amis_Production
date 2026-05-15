@@ -26,5 +26,9 @@ namespace MISA.PRODUCTION.DL.Interfaces
         
         // Hàm lấy dữ liệu có phân trang và lọc
         Task<PagingResult<T>> GetFilterPaging(FilterPagingRequest request);
+
+        // Lấy tất cả data k phân trang để làm Excel
+        Task<List<T>> GetFilterAll(FilterPagingRequest request);
+
     }
 }
