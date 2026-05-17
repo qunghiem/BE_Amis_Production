@@ -91,7 +91,7 @@ namespace MISA.PRODUCTION.DL.Base
             // Lấy danh sách các cột
             var columns = typeof(T).GetAllColumns();
 
-            // Build: UPDATE `ProductionShift` SET `Col1` = @Col1, `Col2` = @Col2, ... WHERE `ProductionShiftID` = @ProductionShiftID
+            // Build: UPDATE `ProductionShift` SET `Col1` = @Col1, `Col2` = @Col2, ... WHERE `ProductionShiftCode` = @ProductionShiftCode
             var setClauses = columns
                 .Where(c => c != primaryKeyName)
                 .Select(c => $"`{c}` = @{c}");

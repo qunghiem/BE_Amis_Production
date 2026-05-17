@@ -90,6 +90,7 @@ namespace MISA.PRODUCTION.API.Controllers
         #endregion
 
 
+        #region API Xuất Excel
         /// <summary>
         /// Xuất file Excel danh sách ca làm việc theo điều kiện lọc, phân trang
         /// </summary>
@@ -114,6 +115,7 @@ namespace MISA.PRODUCTION.API.Controllers
                     MoreInfo = ex.Data
                 });
             }
-        }
+        } 
+        #endregion
     }
 }
