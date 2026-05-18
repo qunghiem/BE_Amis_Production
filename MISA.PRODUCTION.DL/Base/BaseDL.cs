@@ -235,8 +235,16 @@ namespace MISA.PRODUCTION.DL.Base
             var tableName = typeof(T).GetTableNameOnly();
             var param = new DynamicParameters();
 
+            // Build WHERE
+            //WHERE 1 = 1
+            //     AND(`ProductCode` LIKE @Keyword OR `ProductName` LIKE @Keyword)
+            //     AND `ProductName` LIKE @Filter_0
+            //     AND `Price` >= @Filter_1
             var sqlWhere = SqlFilterBuilder.BuildWhereClause<T>(
                 request.Keyword, request.Filters, ref param);
+
+            // Build ORDER BY
+            //ORDER BY CreatedDate DESC
             var sqlOrderBy = SqlFilterBuilder.BuildOrderByClause<T>(
                 request.SortBy, request.SortDirection);
 

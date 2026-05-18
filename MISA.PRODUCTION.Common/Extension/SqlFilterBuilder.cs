@@ -20,7 +20,7 @@ namespace MISA.PRODUCTION.Common.Extension
             ref DynamicParameters param)
         {
             var type = typeof(T);
-            var sqlWhere = new StringBuilder(" WHERE 1 = 1 ");
+            var sqlWhere = new StringBuilder(" WHERE 1 = 1 "); // đỡ phải viết AND đầu tiên
             int paramIndex = 0;
 
             // 1. Keyword: tìm kiếm trên tất cả cột string

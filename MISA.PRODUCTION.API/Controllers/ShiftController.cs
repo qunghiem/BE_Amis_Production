@@ -102,6 +102,7 @@ namespace MISA.PRODUCTION.API.Controllers
             try
             {
                 var fileBytes = await _shiftBL.ExportExcel(request);
+                // trả về file Excel: nội dung file, định dạng file, tên file
                 return File(fileBytes,
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     $"CaLamViec_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");

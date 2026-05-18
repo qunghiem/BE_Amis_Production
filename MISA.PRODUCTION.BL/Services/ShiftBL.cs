@@ -190,37 +190,52 @@ namespace MISA.PRODUCTION.BL.Services
         // Hàm Tạo Excel
         public async Task<byte[]> ExportExcel(FilterPagingRequest request)
         {
+            // get toàn bộ ds k phân trang
             var data = await _baseDL.GetFilterAll(request);
-
+            // Tạo ra một file Excel trống
             using var workbook = new XLWorkbook();
+            //Tạo một sheet mới tên là "Ca làm việc"
             var ws = workbook.Worksheets.Add("Ca làm việc");
 
-            // Header — đúng thứ tự UI
+            // Tạo hàng Tiêu đề Header — các cột
             var headers = new[]
             {
-        "STT", "Mã ca", "Tên ca", "Giờ vào ca", "Giờ hết ca",
-        "Bắt đầu nghỉ giữa ca", "Kết thúc nghỉ giữa ca",
-        "Thời gian làm việc (giờ)", "Thời gian nghỉ giữa ca (giờ)",
-        "Trạng thái", "Người tạo", "Ngày tạo", "Người sửa", "Ngày sửa"
-    };
+                "STT", "Mã ca", "Tên ca", "Giờ vào ca", "Giờ hết ca",
+                "Bắt đầu nghỉ giữa ca", "Kết thúc nghỉ giữa ca",
+                "Thời gian làm việc (giờ)", "Thời gian nghỉ giữa ca (giờ)",
+                "Trạng thái", "Người tạo", "Ngày tạo", "Người sửa", "Ngày sửa"
+            };
 
+            // style từng ô cho hàng
+            // // 1 ô(cell) dc tạo bởi (hàng, cột)
             for (int i = 0; i < headers.Length; i++)
             {
+                // lấy ra ô đó
                 var cell = ws.Cell(1, i + 1);
+                // gán giá trị cho ô 
                 cell.Value = headers[i];
+                // set style cho ô
                 cell.Style.Font.Bold = true;
             }
 
             // Data
+            // lặp qua từng bản ghi 
             for (int row = 0; row < data.Count; row++)
             {
+                // lấy ra bản ghi
                 var s = data[row];
+                // tính stt hàng để chứa row, vì header ở hàng 1 nên row bắt đầu từ 2
                 var r = row + 2;
 
+                // ô STT
                 ws.Cell(r, 1).Value = row + 1;
+                // ô Mã ca
                 ws.Cell(r, 2).Value = s.ProductionShiftCode;
+                // ô Tên ca
                 ws.Cell(r, 3).Value = s.ProductionShiftName;
+                // ô thơi gian bắt đầu ca
                 ws.Cell(r, 4).Value = s.StartTime.ToString(@"hh\:mm");
+                // ô thời gian kết thúc ca
                 ws.Cell(r, 5).Value = s.EndTime.ToString(@"hh\:mm");
                 ws.Cell(r, 6).Value = s.BreakStartTime?.ToString(@"hh\:mm") ?? "";
                 ws.Cell(r, 7).Value = s.BreakEndTime?.ToString(@"hh\:mm") ?? "";
@@ -232,11 +247,14 @@ namespace MISA.PRODUCTION.BL.Services
                 ws.Cell(r, 13).Value = s.ModifiedBy ?? "";
                 ws.Cell(r, 14).Value = s.ModifiedDate.ToString("dd/MM/yyyy");
             }
-
+            // chọn toàn bộ cột đang có dữ liệu và tự động co giãn width dựa theo nội dung
             ws.Columns().AdjustToContents();
 
+            // new 1 vùng nhớ trong RAM
             using var stream = new MemoryStream();
+            // đổ toàn bộ dữ liệu file Excel đó vào vùng đệm RAM
             workbook.SaveAs(stream);
+            // trả về kiểu dữ liệu mảng các byte thô
             return stream.ToArray();
         }
     }
