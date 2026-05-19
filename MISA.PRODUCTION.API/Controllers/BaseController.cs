@@ -98,7 +98,7 @@ namespace MISA.PRODUCTION.API.Controllers
         #region API Cập nhật/Sửa bản ghi
         /// <summary>
         /// API Cập nhật/Sửa bản ghi
-        /// </summary>
+        /// </summary>  
         /// <param name="id"></param>
         /// <param name="entity"></param>
         /// <returns></returns>

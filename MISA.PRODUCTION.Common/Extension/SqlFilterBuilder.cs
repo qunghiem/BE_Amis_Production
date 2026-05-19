@@ -152,7 +152,7 @@ namespace MISA.PRODUCTION.Common.Extension
         {
             if (string.IsNullOrWhiteSpace(sortBy)) return " ORDER BY CreatedDate DESC";
 
-            // ★ Case-insensitive lookup (giống BuildWhereClause)
+            // Case-insensitive lookup (giống BuildWhereClause)
             var prop = typeof(T).GetProperties()
                 .FirstOrDefault(p => string.Equals(p.Name, sortBy, StringComparison.OrdinalIgnoreCase));
             if (prop == null) return " ORDER BY CreatedDate DESC";
@@ -160,7 +160,7 @@ namespace MISA.PRODUCTION.Common.Extension
             var direction = string.Equals(sortDirection, "DESC", StringComparison.OrdinalIgnoreCase)
                 ? "DESC" : "ASC";
 
-            // ★ Dùng prop.Name (đúng case) thay vì sortBy từ frontend
+            // Dùng prop.Name (đúng case) thay vì sortBy từ frontend
             return $" ORDER BY `{prop.Name}` {direction}";
         }
     }
